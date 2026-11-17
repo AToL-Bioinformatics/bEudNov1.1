@@ -16,6 +16,12 @@ setup_snakemake
 # check this here because it's annotation-specific (for now)
 export GPU_ACCOUNT="${PAWSEY_PROJECT:?PAWSEY_PROJECT must be set for Annotation}-gpu"
 
+# This genome caused errors like this on Pawsey:
+# F0000 00:00:1794890508.018185 1756815 rocm_dnn.cc:3872] Failed to allocate scratch memory - Requested memory size (8685828096) exceeds the max memory limit (8589934592).
+#        You can set the env var TF_CUDNN_WORKSPACE_LIMIT_IN_MB to a larger number (e.g. 8192) to increase the max memory limit.
+# test overriding it manually and setting GPUs to 2
+TF_CUDNN_WORKSPACE_LIMIT_IN_MB=128000
+
 # Use a second profile for Tiberius. This requires Snakemake 9.27.0. From that
 # version, profile instances specified later take precedence over earlier
 # instances, wherever the same top-level entries occur in multiple profiles,
